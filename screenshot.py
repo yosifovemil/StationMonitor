@@ -2,25 +2,26 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
-from datetime import datetime
+from config import Config
+import filename_generator
 
 
-def save_screenshot(url: str):
+def save_screenshot(config: Config):
     op = Options()
     op.add_argument("--headless")
     op.add_argument("--disable-gpu")
 
-    filename = datetime.now().strftime("%Y%m%d-%H%M%S.png")
+    filename = filename_generator.generate(config, "screenshot", "png")
 
-    display = Display(visible=False, size=(800, 600))
-    display.start()
+    # display = Display(visible=False, size=(800, 600))
+    # display.start()
 
     driver = webdriver.Chrome(options=op)
-    driver.get(url)
+    driver.get(config.get_url())
     take_screenshot(driver, filename)
     driver.quit()
 
-    display.stop()
+    # display.stop()
 
 
 def take_screenshot(driver: webdriver.Chrome, path: str) -> None:
