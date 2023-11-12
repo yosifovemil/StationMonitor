@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
 from datetime import datetime
@@ -15,7 +15,7 @@ def save_screenshot(url: str):
     display = Display(visible=False, size=(800, 600))
     display.start()
 
-    driver = webdriver.Firefox(options=op)
+    driver = webdriver.Chrome(options=op)
     driver.get(url)
     take_screenshot(driver, filename)
     driver.quit()
