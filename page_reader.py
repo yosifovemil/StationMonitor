@@ -5,6 +5,7 @@ from config import Config
 import logging
 from datetime import datetime
 import filename_generator
+import re
 
 
 class PageReader:
@@ -39,6 +40,23 @@ class PageReader:
                 dataframes[graph_name] = data
 
         return dataframes
+
+    def get_last_update(self):
+        """Fetches date the graph was updated
+        :return: Date when the graph was last updated
+        """
+        span_elements = self._soup.find_all(name="span")
+        matching_elements = [elem.text for elem in span_elements if elem.text.find("Последна актуализация") != -1]
+        if len(matching_elements) != 1:
+            raise RuntimeError("Unexpected number of matching span elements {num} for last updated date".format(
+                num=len(matching_elements)))
+        else:
+            elem = matching_elements[0]
+            matched_date = re.search("\d\d\.\d\d\.\d\d\d\d \d\d:\d\d", elem)
+            if matched_date is None:
+                raise RuntimeError("Could not extract date from element {elem}".format(elem=elem))
+            else:
+                return datetime.strptime(matched_date.group(), "%d.%m.%Y %H:%M")
 
     def read_page(self):
         session = requests.Session()

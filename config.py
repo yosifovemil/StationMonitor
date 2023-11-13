@@ -8,6 +8,7 @@ class Config:
         self._url = parser['Default']['URL'].strip()
         self._graphs = parser['Default']['Graphs'].split(" ")
         self._data_location = parser['Default']['DataLocation']
+        self._last_updated_file = parser['Default']['LastUpdatedFile']
 
     def get_url(self):
         return self._url
@@ -17,6 +18,9 @@ class Config:
 
     def get_data_location(self):
         return self._data_location
+
+    def get_last_updated_file(self):
+        return self._last_updated_file
 
     def read_config(self):
         parser = configparser.ConfigParser()
