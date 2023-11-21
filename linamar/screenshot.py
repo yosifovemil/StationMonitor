@@ -1,9 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from pyvirtualdisplay import Display
 from config import Config
-import filename_generator
+from file_io import filename_generator
 
 
 def save_screenshot(config: Config):

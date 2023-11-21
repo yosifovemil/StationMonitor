@@ -10,6 +10,14 @@ class Config:
         self._data_location = parser['Default']['DataLocation']
         self._last_updated_file = parser['Default']['LastUpdatedFile']
 
+        self._email_user = parser['Gmail']['username']
+        self._email_password = parser['Gmail']['password']
+        self._admins = parser['Gmail']['admins'].split(" ")
+        self._users = parser['Gmail']['users'].split(" ")
+
+        self._single_exposure_limits = parser['SingleExposureLimits']
+        self._avg_daily_limits = parser['AverageDailyLimits']
+
     def get_url(self):
         return self._url
 
@@ -21,6 +29,24 @@ class Config:
 
     def get_last_updated_file(self):
         return self._last_updated_file
+
+    def get_email_user(self):
+        return self._email_user
+
+    def get_email_password(self):
+        return self._email_password
+
+    def get_admins(self):
+        return self._admins
+
+    def get_users(self):
+        return self._users
+
+    def get_single_exposure_limit(self, compound):
+        return float(self._single_exposure_limits[compound])
+
+    def get_avg_daily_limit(self, compound):
+        return float(self._avg_daily_limits[compound])
 
     def read_config(self):
         parser = configparser.ConfigParser()

@@ -1,11 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
-import graph_parser
+from linamar import graph_parser
 from config import Config
 import logging
 from datetime import datetime
-import filename_generator
+from file_io import filename_generator
 import re
+from email_client import error_message_admins
 
 
 class PageReader:
@@ -15,7 +16,6 @@ class PageReader:
 
     def snapshot_page(self):
         """ Saves webpage to html
-        :param filename: path to the html file
         :return:
         """
         filename = filename_generator.generate(self._config, "snapshot", "html")
@@ -47,14 +47,17 @@ class PageReader:
         """
         span_elements = self._soup.find_all(name="span")
         matching_elements = [elem.text for elem in span_elements if elem.text.find("Последна актуализация") != -1]
+
         if len(matching_elements) != 1:
-            raise RuntimeError("Unexpected number of matching span elements {num} for last updated date".format(
-                num=len(matching_elements)))
+            message = "Unexpected number of matching span elements {num} for last updated date".format(
+                num=len(matching_elements))
+            error_message_admins(message, self._config)
         else:
             elem = matching_elements[0]
             matched_date = re.search("\d\d\.\d\d\.\d\d\d\d \d\d:\d\d", elem)
             if matched_date is None:
-                raise RuntimeError("Could not extract date from element {elem}".format(elem=elem))
+                message = "Could not extract date from element {elem}".format(elem=elem)
+                error_message_admins(message, self._config)
             else:
                 return datetime.strptime(matched_date.group(), "%d.%m.%Y %H:%M")
 

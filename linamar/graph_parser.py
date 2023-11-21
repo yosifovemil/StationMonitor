@@ -25,7 +25,7 @@ def parse(graph: str):
     for row in rows[1:]:
         row_vals = row.split(",")
         dates.append(row_vals[0])
-        values.append(row_vals[1])
+        values.append(float(row_vals[1]))
 
     data = pd.DataFrame(data=list(zip(dates, values)), columns=colnames)
     data['DateTime'] = pd.to_datetime(data['DateTime'], format="%Y/%m/%d %H:%M:%S")
