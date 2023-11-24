@@ -32,6 +32,12 @@ def notify_users(single_exposures: list[dict], daily_averages: list[dict], confi
     if len(daily_averages) > 0:
         body_html += format_averages(daily_averages)
 
+    body_html += "<p>Можете да видите малко повече информация за средните и максимални стойности на " \
+                 "<a href=\"http://ec2-51-20-137-101.eu-north-1.compute.amazonaws.com:3000/\">този уебсайт</a> " \
+                 "(разработва се активно и е възможно представените данни да са некоректни). " \
+                 "За повече информация или подвърждение на данните, моля свържете се с " \
+                 "<a href=\"mailto:yosifovemil@gmail.com\">yosifovemil@gmail.com</a></p>"
+
     send_email(
         subject=subject,
         body=body_text,
