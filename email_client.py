@@ -15,7 +15,7 @@ def error_message_admins(error: str, config: Config):
     )
 
 
-def notify_users(single_exposures: dict[str, pd.DataFrame], daily_averages: dict[str, float], config: Config):
+def notify_users(single_exposures: list[dict], daily_averages: list[dict], config: Config):
     subject = "Линамар превишени стойности"
 
     body_text = """
@@ -42,24 +42,25 @@ def notify_users(single_exposures: dict[str, pd.DataFrame], daily_averages: dict
     )
 
 
-def format_single_exposures(single_exposures: dict[str, pd.DataFrame]):
+def format_single_exposures(single_exposures: list[dict]):
     html = "<h2>Еднократни стойности над лимита</h2>"
-    for compound in single_exposures.keys():
-        html += "<h3>{compound}</h3>".format(compound=compound)
-        html += single_exposures[compound].to_html(index=False)
+    for compound in single_exposures:
+        html += "<h3>{compound} - лимит {limit} µg/m3</h3>".format(compound=compound['name'], limit=compound['limit'])
+        html += compound['data'].to_html(index=False)
         html += "<br />"
 
     return html
 
 
-def format_averages(daily_averages: dict[str, float]):
+def format_averages(daily_averages: list[dict]):
     html = "<h2>Средни денонощни стойности над лимита</h2>"
     html += "<table border=\"1\">"
-    html += "<tr><th>Съединение</th><th>Средна денонощна концентрация</th></tr>"
-    for compound in daily_averages.keys():
+    html += "<tr><th>Съединение</th><th>Средна денонощна концентрация</th><th>Лимит</th></tr>"
+    for compound in daily_averages:
         html += "<tr>"
-        html += "<td>{compound}</td>".format(compound=compound)
-        html += "<td>{:.2f}</td>".format(daily_averages[compound])
+        html += "<td>{compound}</td>".format(compound=compound['name'])
+        html += "<td>{:.2f}</td>".format(compound['average'])
+        html += "<td>{:.2f}</td>".format(compound['limit'])
         html += "</tr>"
 
     html += "</table>"

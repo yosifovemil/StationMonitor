@@ -13,25 +13,37 @@ def analyze_and_notify(data: dict[str, pd.DataFrame], config: Config):
 
 
 def single_exposure_analysis(data: dict[str, pd.DataFrame], config: Config):
-    compounds_over_limit = dict()
+    compounds_over_limit = list()
     for compound in data.keys():
         limit = config.get_single_exposure_limit(compound)
 
         readings_over_limit = data[compound][data[compound][compound] >= limit]
         if readings_over_limit.count()[compound] > 0:
-            compounds_over_limit[compound] = readings_over_limit
+            compounds_over_limit.append(
+                {
+                    'name': compound,
+                    'data': readings_over_limit,
+                    'limit': limit
+                }
+            )
 
     return compounds_over_limit
 
 
 def daily_average_analysis(data: dict[str, pd.DataFrame], config: Config):
-    compounds_over_limit = dict()
+    compounds_over_limit = list()
     for compound in data.keys():
         limit = config.get_avg_daily_limit(compound)
 
         average = data[compound][compound].mean()
 
         if average > limit:
-            compounds_over_limit[compound] = average
+            compounds_over_limit.append(
+                {
+                    'name': compound,
+                    'average': average,
+                    'limit': limit
+                }
+            )
 
     return compounds_over_limit
