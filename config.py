@@ -1,4 +1,5 @@
 import configparser
+import os
 
 
 class Config:
@@ -50,5 +51,7 @@ class Config:
 
     def read_config(self):
         parser = configparser.ConfigParser()
-        parser.read('settings.ini')
+
+        settings_file = os.path.join(os.path.expanduser("~"), "Config", "StationMonitor.ini")
+        parser.read(settings_file)
         return parser
