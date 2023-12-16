@@ -33,7 +33,7 @@ def notify_users(single_exposures: list[dict], daily_averages: list[dict], confi
         body_html += format_averages(daily_averages)
 
     body_html += "<p>Можете да видите малко повече информация за средните и максимални стойности на " \
-                 "<a href=\"http://ec2-51-20-137-101.eu-north-1.compute.amazonaws.com:3000/\">този уебсайт</a> " \
+                 "<a href=\"http://ec2-16-171-116-250.eu-north-1.compute.amazonaws.com:3000/\">този уебсайт</a> " \
                  "(разработва се активно и е възможно представените данни да са некоректни). " \
                  "За повече информация или подвърждение на данните, моля свържете се с " \
                  "<a href=\"mailto:yosifovemil@gmail.com\">yosifovemil@gmail.com</a></p>"
